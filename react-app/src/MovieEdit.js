@@ -10,8 +10,10 @@ class MovieEdit extends Component {
   componentDidMount() {
     console.log('this.props.movieId' + this.props.match.params.movieId);
     const id = this.props.match.params.movieId;
-    fetch('/api/movies/${id}')
-      .then(rsp => rsp.json())
+    fetch('/api/movies/' + id)
+      .then(rsp => {
+        rsp.json();
+      })
       .then(movie => this.props.movieLoaded(movie));
   }
 
@@ -20,7 +22,7 @@ class MovieEdit extends Component {
   };
 
   onChangeRatings(e) {
-    const movie = this.state.movie;
+    const movie = this.props.movie;
     movie.ratings[e.prop] = e.value;
     this.setState({ movie: movie });
   }
@@ -28,7 +30,7 @@ class MovieEdit extends Component {
   save = e => {
     e.preventDefault();
     const id = this.props.movieId;
-    const movie = this.state.movie;
+    const movie = this.props.movie;
 
     fetch("/api/movies/" + id, {
       headers: {
@@ -41,6 +43,7 @@ class MovieEdit extends Component {
 
   render() {
     const { movie } = this.props;
+    console.log("movie " +  this.props);
     if (!movie) return null;
 
     return (
@@ -78,20 +81,6 @@ class MovieEdit extends Component {
           value={movie.mpaaRating}
         >
           MPAA Rating
-        </InputText>
-        <InputText
-          onChange={this.onChangeRatings}
-          prop="criticsScore"
-          value={ratings.criticsScore}
-        >
-          Critics Score
-        </InputText>
-        <InputText
-          onChange={this.onChangeRatings}
-          prop="audienceScore"
-          value={ratings.audienceScore}
-        >
-          Audience Score
         </InputText>
 
         <div className="btn-group">
