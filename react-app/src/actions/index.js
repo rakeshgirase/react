@@ -6,6 +6,7 @@ export const moviesLoaded = movies =>  {
 }
 
 export const movieLoaded = movie => {
+    console.log("Movie:", movie);
     return {
       type: "MOVIE-LOADED",
       movie

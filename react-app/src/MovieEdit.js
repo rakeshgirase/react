@@ -12,7 +12,7 @@ class MovieEdit extends Component {
     const id = this.props.match.params.movieId;
     fetch('/api/movies/' + id)
       .then(rsp => {
-        rsp.json();
+      return rsp.json();
       })
       .then(movie => this.props.movieLoaded(movie));
   }
@@ -43,8 +43,9 @@ class MovieEdit extends Component {
 
   render() {
     const { movie } = this.props;
-    console.log("movie " +  this.props);
+    console.log("movie " ,  this.props.movie);
     if (!movie) return null;
+    console.log('movie.title', movie.title);
 
     return (
       <form>
@@ -99,11 +100,12 @@ class MovieEdit extends Component {
 
 const mapStateToProps = state => {
   return {
-    movies: state.currentMovie
+    movie: state.currentMovie
   };
 };
 
 const mapDispatchToProps = dispatch => {
+  console.log('mapDispatchToProps');
   return {
     movieLoaded: movie => dispatch(movieLoaded(movie)),
     currentMoviePropChanged: (prop, value) =>

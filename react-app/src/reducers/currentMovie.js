@@ -1,4 +1,4 @@
-const currentMovie = function(state = null, action) {
+const currentMovie = function(state = {}, action) {
   console.log(action.type, action);
 
   switch (action.type) {
