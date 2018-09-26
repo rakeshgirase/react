@@ -2,13 +2,12 @@ import React, { Component } from "react";
 import { moviesLoaded } from "./actions";
 import MovieRow from "./MovieRow";
 import { connect } from "react-redux"
+import { ajax } from "rxjs/ajax"
 
 class MovieList extends Component {
 
   componentDidMount() {
-    fetch("/api/movies")
-      .then(rsp => rsp.json())
-      .then(movies => this.props.moviesLoaded(movies));
+    ajax.getJSON("/api/movies").subscribe(movies => this.props.moviesLoaded(movies));
   }
 
   render() {

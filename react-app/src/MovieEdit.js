@@ -3,18 +3,18 @@ import { Link } from "react-router-dom";
 import { movieLoaded, currentMoviePropChanged } from "./actions";
 import InputText from "./InputText";
 import TextArea from "./TextArea";
-import { connect } from "react-redux"
+import { connect } from "react-redux";
+import {ajax} from "rxjs/ajax"
+
 
 class MovieEdit extends Component {
 
   componentDidMount() {
     console.log('this.props.movieId' + this.props.match.params.movieId);
     const id = this.props.match.params.movieId;
-    fetch('/api/movies/' + id)
-      .then(rsp => {
-      return rsp.json();
-      })
-      .then(movie => this.props.movieLoaded(movie));
+    console.log('ajax..');
+    ajax.getJSON('/api/movies/' + id)
+    .subscribe(movie => this.props.movieLoaded(movie));
   }
 
   onChange = e => {
