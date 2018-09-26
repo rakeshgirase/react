@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 import InputText from "./InputText";
 import TextArea from "./TextArea";
@@ -12,7 +13,8 @@ class MovieEdit extends Component {
   }
 
   componentDidMount() {
-    const id = this.props.movieId;
+    console.log('this.props.movieId' + this.props.match.params.movieId);
+    const id = this.props.match.params.movieId;
     fetch("/api/movies/" + id)
       .then(rsp => rsp.json())
       .then(movie => this.setState({ movie: movie }));
@@ -41,7 +43,7 @@ class MovieEdit extends Component {
       },
       method: "put",
       body: JSON.stringify(movie)
-    }).then(() => this.props.toListMode());
+    }).then(() => this.props.history.push("/movies"));
   };
 
   render() {
@@ -103,9 +105,9 @@ class MovieEdit extends Component {
           <button onClick={this.save} className="btn btn-primary">
             Save
           </button>
-          <button onClick={this.props.toListMode} className="btn btn-danger">
+          <Link className="btn btn-danger" to="/movies">
             Cancel
-          </button>
+          </Link>
         </div>
       </form>
     );

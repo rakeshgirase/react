@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {Link} from "react-router-dom";
 
 class MovieRow extends Component {
   toEditMode = () => {
@@ -14,13 +15,13 @@ class MovieRow extends Component {
         <td>{movie.title}</td>
         <td>{movie.abridgedDirectors.join(", ")}</td>
         <td style={{ width: 1 }}>
-          <button
-            onClick={this.toEditMode}
-            className="btn btn-default btn-xs edit-button"
-          >
-            Edit
-          </button>
-        </td>
+      <Link
+        className="btn btn-default btn-xs edit-button"
+        to={`/movie/${movie.id}`}
+      >
+        Edit
+      </Link>
+    </td>
       </tr>
     );
   }
