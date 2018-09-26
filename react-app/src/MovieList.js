@@ -1,23 +1,18 @@
 import React, { Component } from "react";
-
+import { moviesLoaded } from "./actions";
 import MovieRow from "./MovieRow";
+import { connect } from "react-redux"
 
 class MovieList extends Component {
-  constructor() {
-    super();
-    this.state = {
-      movies: []
-    };
-  }
 
   componentDidMount() {
     fetch("/api/movies")
       .then(rsp => rsp.json())
-      .then(movies => this.setState({ movies: movies }));
+      .then(movies => this.props.moviesLoaded(movies));
   }
 
   render() {
-    const rows = this.state.movies.map(movie => (
+    const rows = this.props.movies.map(movie => (
       <MovieRow
         key={movie.id}
         movie={movie}
@@ -41,4 +36,17 @@ class MovieList extends Component {
   }
 }
 
-export default MovieList;
+
+const mapStateToProps = state => {
+  return {
+    movies: state.movies
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    moviesLoaded: movies => dispatch(moviesLoaded(movies))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MovieList);

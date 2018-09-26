@@ -3,6 +3,14 @@ import "bootstrap/dist/css/bootstrap.css";
 import {BrowserRouter, Switch, Route,Redirect} from "react-router-dom";
 import MovieList from "./MovieList";
 import MovieEdit from "./MovieEdit";
+import { createStore } from "redux";
+
+import reducers from "./reducers";
+
+export const store = createStore(
+  reducers,
+  window.devToolsExtension ? window.devToolsExtension() : f => f
+);
 
 class App extends Component {
 

@@ -1,29 +1,22 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-
+import { movieLoaded, currentMoviePropChanged } from "./actions";
 import InputText from "./InputText";
 import TextArea from "./TextArea";
+import { connect } from "react-redux"
 
 class MovieEdit extends Component {
-  constructor() {
-    super();
-    this.state = {
-      movie: {}
-    };
-  }
 
   componentDidMount() {
     console.log('this.props.movieId' + this.props.match.params.movieId);
     const id = this.props.match.params.movieId;
-    fetch("/api/movies/" + id)
+    fetch('/api/movies/${id}')
       .then(rsp => rsp.json())
-      .then(movie => this.setState({ movie: movie }));
+      .then(movie => this.props.movieLoaded(movie));
   }
 
   onChange = e => {
-    const movie = this.state.movie;
-    movie[e.prop] = e.value;
-    this.setState({ movie: movie });
+    this.props.currentMoviePropChanged(e.prop, e.value);
   };
 
   onChangeRatings(e) {
@@ -47,8 +40,8 @@ class MovieEdit extends Component {
   };
 
   render() {
-    const movie = this.state.movie;
-    const ratings = movie.ratings || {};
+    const { movie } = this.props;
+    if (!movie) return null;
 
     return (
       <form>
@@ -114,4 +107,20 @@ class MovieEdit extends Component {
   }
 }
 
-export default MovieEdit;
+
+const mapStateToProps = state => {
+  return {
+    movies: state.currentMovie
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    movieLoaded: movie => dispatch(movieLoaded(movie)),
+    currentMoviePropChanged: (prop, value) =>
+      dispatch(currentMoviePropChanged(prop, value))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MovieEdit);
+
